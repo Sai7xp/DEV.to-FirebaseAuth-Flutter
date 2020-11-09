@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_gsignin/screens/splashscreen.dart';
 import 'package:firebase_gsignin/screens/authscreen.dart';
@@ -9,7 +10,7 @@ var routes = <String, WidgetBuilder>{
   // "/home":(BuildContext context) => HomeScreen(),
 };
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
