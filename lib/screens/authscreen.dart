@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_gsignin/screens/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,23 +17,25 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool isVisible = false;
-  Future<FirebaseUser> _signIn() async {
+
+  Future<User> _signIn() async {
+    await Firebase.initializeApp();
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication gsa =
+    final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      idToken: gsa.idToken,
-      accessToken: gsa.accessToken,
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      idToken: googleSignInAuthentication.idToken,
+      accessToken: googleSignInAuthentication.accessToken,
     );
-    final AuthResult authResult = await auth.signInWithCredential(credential);
-    final FirebaseUser firebaseUser = authResult.user;
-    name = firebaseUser.displayName;
-    email = firebaseUser.email;
-    imageUrl = firebaseUser.photoUrl;
-    final FirebaseUser currentUser = await auth.currentUser();
-    assert(firebaseUser.uid == currentUser.uid);
-    return firebaseUser;
+    // final AuthResult authResult = await auth.signInWithCredential(credential);
+    // final User user = authResult.user;
+
+    User user = (await auth.signInWithCredential(credential)).user;
+    name = user.displayName;
+    email = user.email;
+    imageUrl = user.photoURL;
+    return user;
   }
 
   @override
