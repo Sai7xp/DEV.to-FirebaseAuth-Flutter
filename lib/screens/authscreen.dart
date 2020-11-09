@@ -32,9 +32,11 @@ class _AuthScreenState extends State<AuthScreen> {
     // final User user = authResult.user;
 
     User user = (await auth.signInWithCredential(credential)).user;
-    name = user.displayName;
-    email = user.email;
-    imageUrl = user.photoURL;
+    if (user != null) {
+      name = user.displayName;
+      email = user.email;
+      imageUrl = user.photoURL;
+    }
     return user;
   }
 
