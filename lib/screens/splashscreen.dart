@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_gsignin/screens/authscreen.dart';
 import 'package:firebase_gsignin/screens/homescreen.dart';
 import 'package:flutter/material.dart';
 
@@ -28,16 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   navigateUser() async {
     // checking whether user already loggedIn or not
-    if (_user != null &&
-        FirebaseAuth.instance.currentUser.reload() != null) {
+    if (_auth.currentUser != null) {
+      // &&  FirebaseAuth.instance.currentUser.reload() != null
       Timer(
-        Duration(seconds: 4),
+        Duration(seconds: 3),
         () => Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (context) => HomeScreen(
-                    username: _auth.currentUser.displayName != null
-                        ? _auth.currentUser.displayName
-                        : "disabled account")),
+                builder: (context) =>
+                    HomeScreen(username: _auth.currentUser.displayName)),
             (Route<dynamic> route) => false),
       );
     } else {
